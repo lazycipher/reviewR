@@ -6,7 +6,11 @@ import { FormControl } from 'baseui/form-control';
 import { loginUser } from '../../firebase/auth';
 import './Style.css';
 
-const Login = (props: any) => {
+interface LoginPropType{
+    history: any
+}
+
+const Login: React.FC<LoginPropType> = (props: LoginPropType) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     return(
@@ -41,7 +45,7 @@ const Login = (props: any) => {
     async function login(email: string, password: string){
         try{
             await loginUser(email, password);
-            props.hostory.replace('/dashboard')
+            props.history.replace('/dashboard')
         }catch(err){
             alert(err.message);
         }

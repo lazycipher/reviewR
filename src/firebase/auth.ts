@@ -3,6 +3,10 @@ import { auth } from "./firebase";
 
 
 // Sign Up Function
+// export const createUser = async (name: string, email: string, password: string) => {
+//     return await auth.createUserWithEmailAndPassword(email, password);
+// }
+
 export const createUser = async (name: string, email: string, password: string) => {
     return await auth.createUserWithEmailAndPassword(email, password);
 }
