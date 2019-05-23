@@ -1,6 +1,8 @@
+import { useContext } from 'react';
 import firebase from 'firebase/app';
 import "firebase/firestore";
 import "firebase/auth";
+import {UserContext} from '../../Context/userContext';
 
 const config = {
     apiKey: "AIzaSyCxZDlZcDNZIHeI4F3lXrC0823B8U_lJEU",
@@ -20,18 +22,27 @@ class Firebase {
 	}
 
 	login(email, password) {
-		return this.auth.signInWithEmailAndPassword(email, password);
+		return this.auth.signInWithEmailAndPassword(email, password).then(() => {
+			this.getUserDetails();
+		});
 	}
 
 	logout() {
 		return this.auth.signOut();
 	}
 
-	async register(name, email, password) {
-		await this.auth.createUserWithEmailAndPassword(email, password)
-		return this.auth.currentUser.updateProfile({
-			displayName: name
-		})
+	async signup(name, email, password) {
+		await this.auth.createUserWithEmailAndPassword(email, password).then((res)=>{
+			return this.db.collection('users').doc(res.user.uid).set({
+				userName: email,
+				userLevel: "user",
+				Name: name
+			})	
+		}).then(()=>{
+			this.getUserDetails();
+		}).catch(err=>{
+			console.log(err.message);
+		});
 	}
 
 	isInitialized() {
@@ -42,6 +53,19 @@ class Firebase {
 
 	getCurrentUsername() {
 		return this.auth.currentUser && this.auth.currentUser.uid
+	}
+	
+	getUserDetails() {
+		const [userDetails, setUserDetails] = useContext(UserContext);
+		this.db.collection('users').doc(this.auth.currentUser.uid).get().then(doc => {
+			const userDetails = doc.data();
+			setUserDetails({
+				Name: userDetails.Name,
+				userLevel: userDetails.userLevel,
+				userName: userDetails.userName
+			}
+			)
+		});
 	}
 }
 

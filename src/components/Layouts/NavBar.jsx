@@ -7,12 +7,16 @@ import {StyledLink as Link} from 'baseui/link';
 import {Button} from 'baseui/button';
 import firebase from '../firebase';
 import { withRouter } from 'react-router-dom';
+import './Style.css';
 
 const NavBar = (props) => {
     return (firebase.getCurrentUsername())? (
-      <HeaderNavigation>
+      <div className="navBar">
+        <HeaderNavigation>
         <NavigationList align={ALIGN.left}>
-          <NavigationItem>reviewR</NavigationItem>
+          <NavigationItem>
+            <Link href="./reviewR">reviewR</Link>
+            </NavigationItem>
         </NavigationList>
         
         <NavigationList align={ALIGN.center} />
@@ -26,23 +30,28 @@ const NavBar = (props) => {
           </NavigationItem>
         </NavigationList>
       </HeaderNavigation>
+      </div>
     ) : (
-      <HeaderNavigation>
-        <NavigationList align={ALIGN.left}>
-          <NavigationItem>reviewR</NavigationItem>
-        </NavigationList>
-        
-        <NavigationList align={ALIGN.center} />
-        
-        <NavigationList align={ALIGN.right}>
-          <NavigationItem>
+      <div className="navBar">
+        <HeaderNavigation>
+          <NavigationList align={ALIGN.left}>
+            <NavigationItem>
+              <Link href="/">reviewR</Link>
+            </NavigationItem>
+          </NavigationList>
+
+          <NavigationList align={ALIGN.center} />
+
+          <NavigationList align={ALIGN.right}>
+            <NavigationItem>
             <Link href="./login">Login</Link>
-          </NavigationItem>
-          <NavigationItem>
+            </NavigationItem>
+            <NavigationItem>
             <Link href="./signup">Signup</Link>
-          </NavigationItem>
-        </NavigationList>
-      </HeaderNavigation>
+            </NavigationItem>
+          </NavigationList>
+        </HeaderNavigation>
+      </div>
       )
     
     async function logout() {

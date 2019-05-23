@@ -4,12 +4,15 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { Provider as StyletronProvider } from "styletron-react";
 import { Client as Styletron } from "styletron-engine-atomic";
+import { UserProvider } from './Context/userContext';
 
 const engine = new Styletron();
 
 ReactDOM.render(
     <StyletronProvider value={engine}>
-        <App />
+        <UserProvider>
+            <App />
+        </UserProvider>
     </StyletronProvider>
     , document.getElementById('root'));
 

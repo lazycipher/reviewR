@@ -49,7 +49,7 @@ const Signup = (props) => {
     )
     async function signup() {
 		try {
-			await firebase.register(name, email, password)
+			await firebase.signup(name, email, password)
 			props.history.replace('/dashboard')
 		} catch(error) {
 			alert(error.message)
