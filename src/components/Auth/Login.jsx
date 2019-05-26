@@ -1,16 +1,18 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import {Block} from 'baseui/block';
 import {Button, SIZE} from 'baseui/button';
 import { Input } from 'baseui/input';
 import { FormControl } from 'baseui/form-control';
-import firebase from '../firebase';
+import { login, getCurrentUsername, getUserDetails } from '../firebase';
 import './Style.css';
 import { Redirect, withRouter } from 'react-router-dom';
+import {UserContext} from '../../Context/userContext';
 
 const Login = (props) => {
+    const [userDetails, setUserDetails] = useContext(UserContext);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    if(firebase.getCurrentUsername()){
+    if(getCurrentUsername()){
         props.history.replace('/dashboard');
     }
     return(
@@ -35,7 +37,7 @@ const Login = (props) => {
                         <Button
                             type={"submit"}
                             size={SIZE.compact}
-                            onClick={login}
+                            onClick={userLogin}
                         >
                             Login
                         </Button>
@@ -44,9 +46,10 @@ const Login = (props) => {
             </Block>
         </div>
     )
-    async function login(){
+    async function userLogin(){
         try{
-            await firebase.login(email, password);
+            await login(email, password);
+            console.log(await getUserDetails());
             props.history.replace('/dashboard');
         }catch(err) {
             console.log(err.message);

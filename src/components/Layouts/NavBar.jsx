@@ -5,12 +5,12 @@ import { HeaderNavigation, ALIGN,
   } from 'baseui/header-navigation';
 import {StyledLink as Link} from 'baseui/link';
 import {Button} from 'baseui/button';
-import firebase from '../firebase';
+import { getCurrentUsername, logout } from '../firebase';
 import { withRouter } from 'react-router-dom';
 import './Style.css';
 
 const NavBar = (props) => {
-    return (firebase.getCurrentUsername())? (
+    return (getCurrentUsername())? (
       <div className="navBar">
         <HeaderNavigation>
         <NavigationList align={ALIGN.left}>
@@ -26,7 +26,7 @@ const NavBar = (props) => {
             <Link href="./login">Add Review</Link>
           </NavigationItem>
           <NavigationItem>
-            <Button onClick={logout} >Logout</Button>
+            <Button onClick={userLogout} >Logout</Button>
           </NavigationItem>
         </NavigationList>
       </HeaderNavigation>
@@ -54,8 +54,8 @@ const NavBar = (props) => {
       </div>
       )
     
-    async function logout() {
-      await firebase.logout()
+    async function userLogout() {
+      await logout()
       props.history.push('/')
     }
   }

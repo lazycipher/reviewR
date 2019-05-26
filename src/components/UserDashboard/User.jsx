@@ -1,12 +1,12 @@
 import React, { useContext } from 'react';
 import { withRouter } from 'react-router-dom';
-import firebase from '../firebase';
+import { getCurrentUsername } from '../firebase';
 import {UserContext} from '../../Context/userContext';
 
 
 const UserDashboard = (props) => {
   const [userDetails] = useContext(UserContext);
-  if(!firebase.getCurrentUsername()) {
+  if(!getCurrentUsername()) {
 		props.history.replace('/login')
 		return null
 }

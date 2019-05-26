@@ -3,7 +3,7 @@ import {Block} from 'baseui/block';
 import {Button, KIND, SIZE} from 'baseui/button';
 import { Input } from 'baseui/input';
 import { FormControl } from 'baseui/form-control';
-import firebase from '../firebase';
+import { signup } from '../firebase';
 import { withRouter } from 'react-router-dom';
 import './Style.css';
 
@@ -40,16 +40,16 @@ const Signup = (props) => {
                         <Button
                             type={"submit"}
                             size={SIZE.compact}
-                            onClick={signup}
+                            onClick={userSignup}
                         >Signup</Button>
                     </>
                 </FormControl>
             </Block>
         </div>
     )
-    async function signup() {
+    async function userSignup() {
 		try {
-			await firebase.signup(name, email, password)
+			await signup(name, email, password)
 			props.history.replace('/dashboard')
 		} catch(error) {
 			alert(error.message)
