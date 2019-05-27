@@ -3,7 +3,7 @@ import {Block} from 'baseui/block';
 import {Button, SIZE} from 'baseui/button';
 import { Input } from 'baseui/input';
 import { FormControl } from 'baseui/form-control';
-import { login, getCurrentUsername, getUserDetails } from '../firebase';
+import { login, getCurrentUsername, isAdmin } from '../firebase';
 import './Style.css';
 import { Redirect, withRouter } from 'react-router-dom';
 import {UserContext} from '../../Context/userContext';
@@ -12,9 +12,7 @@ const Login = (props) => {
     const [userDetails, setUserDetails] = useContext(UserContext);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    if(getCurrentUsername()){
-        props.history.replace('/dashboard');
-    }
+    if(getCurrentUsername())return <Redirect to="/dashboard" />
     return(
         <div className="loginForm">
             <Block className="formContainer">
@@ -49,8 +47,8 @@ const Login = (props) => {
     async function userLogin(){
         try{
             await login(email, password);
-            console.log(await getUserDetails());
-            props.history.replace('/dashboard');
+            const ifAdmin = await isAdmin();
+            ifAdmin==='admin'?props.history.replace('/admin'):props.history.replace('/dashboard');
         }catch(err) {
             console.log(err.message);
         }

@@ -1,11 +1,19 @@
 import React, { useContext } from 'react';
-import { withRouter } from 'react-router-dom';
-import { getCurrentUsername } from '../firebase';
+import { Redirect, withRouter } from 'react-router-dom';
+import { getCurrentUsername, getUserDetails } from '../firebase';
 import {UserContext} from '../../Context/userContext';
 
 
 const UserDashboard = (props) => {
-  const [userDetails] = useContext(UserContext);
+  const [userDetails, setUserDetails] = useContext(UserContext);
+  const data = getUserDetails()
+  setUserDetails({
+    name: data.name,
+    userName: data.userName,
+    userLevel: data.userLevel
+  });
+  console.log(userDetails);
+  if(userDetails.userLevel === 'admin') return <Redirect to="/admin" />
   if(!getCurrentUsername()) {
 		props.history.replace('/login')
 		return null

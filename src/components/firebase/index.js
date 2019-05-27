@@ -49,15 +49,17 @@ export const isInitialized = () => {
 }
 
 export const getCurrentUsername = () => {
+	console.log(auth.currentUser)
 	return auth.currentUser && auth.currentUser.uid
 }
 
 export const getUserDetails = async () => {
-		await db.collection('users').doc(auth.currentUser.uid).get().then((doc)=>{
-		return doc.data();
-	});
-}
+	const doc = await db.collection('users').doc(auth.currentUser.uid).get()
+	return doc.data();
+}	
 
-export const isAdmin = () => {
-
+export const isAdmin = async() => {
+	const doc = await db.collection('users').doc(auth.currentUser.uid).get();
+	const data = doc.data();
+	return data.userLevel;
 }
